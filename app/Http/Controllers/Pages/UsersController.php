@@ -21,7 +21,7 @@ class UsersController extends Controller
         try {
             $response = $guzzleClient->request('GET', 'https://jsonplaceholder.typicode.com/users');
         } catch (GuzzleRequestException $e) {
-            throw $e;
+            return response()->view('errors.500', [], 500);
         }
 
         $users = json_decode($response->getBody());
