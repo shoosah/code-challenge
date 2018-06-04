@@ -4,6 +4,8 @@
 
     <title>Code Challenge @yield('title')</title>
 
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     @yield('css')
     @yield('hreflang')
     @yield('meta_redirect')

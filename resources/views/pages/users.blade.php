@@ -11,13 +11,22 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($users as $index => $user)
+            @foreach($users as $user)
+                <?php
+                $lastName = (strpos($user->name, ' ') === false) ?
+                        '' :
+                        preg_replace('#.*\s([\w-]*)$#', '$1', $user->name)
+                ?>
                 <tr>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
+                    <td>{{ trim(preg_replace('#' . $lastName . '#', '', $user->name)) }}</td>
                     <td>
-                        <a href="{{ $user->website }}">{{ $user->website }}</a>
+                        {{$lastName}}
+                    </td>
+                    <td>
+                        <a href="mailto:{{ $user->email }}" >{{ $user->email }}</a>
+                    </td>
+                    <td>
+                        <a href="http://{{ $user->website }}">{{ $user->website }}</a>
                     </td>
                 </tr>
             @endforeach
