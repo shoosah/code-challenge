@@ -4,9 +4,11 @@
         <table class="table table-responsive table-striped" id="usersTable">
             <thead>
             <tr>
+                {{--Allow sort by first name--}}
                 <th class="sortable" onclick="sortTable(users, 0, asc1); asc1 *= -1; asc2 = 1; asc3 = 1;">
                     First Name
                 </th>
+                {{--Allow sort by last name--}}
                 <th class="sortable" onclick="sortTable(users, 1, asc1); asc1 *= -1; asc2 = 1; asc3 = 1;">
                     Last Name
                 </th>
@@ -16,19 +18,24 @@
             </thead>
             <tbody id="usersTableBody">
             @foreach($users as $user)
+                {{--Split first and last name--}}
                 <?php
                 $lastName = (strpos($user->name, ' ') === false) ?
                         '' :
                         preg_replace('#.*\s([\w-]*)$#', '$1', $user->name)
                 ?>
                 <tr>
+                    {{--First Name--}}
                     <td>{{ trim(preg_replace('#' . $lastName . '#', '', $user->name)) }}</td>
+                    {{--Last Name--}}
                     <td>
                         {{$lastName}}
                     </td>
+                    {{--Email address--}}
                     <td>
                         <a href="mailto:{{ $user->email }}" >{{ $user->email }}</a>
                     </td>
+                    {{--Website address--}}
                     <td>
                         <a href="http://{{ $user->website }}">{{ $user->website }}</a>
                     </td>
