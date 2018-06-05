@@ -1,16 +1,16 @@
 @extends('layouts.master')
 @section('content')
     <div>
-        <input class="mt-5" type="text" id="searchInput" onkeyup="search()" placeholder="Search the table...">
+        <input class="mt-5" type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search the table...">
         <table class="table table-responsive table-striped" id="usersTable">
             <thead>
             <tr>
                 {{--Allow sort by first name--}}
-                <th class="sortable" onclick="sortTable(users, 0, asc1); asc1 *= -1; asc2 = 1; asc3 = 1;">
+                <th class="sortable" onclick="sortTable(users, 0, asc1); asc1 *= -1; asc2 = 1;">
                     First Name
                 </th>
                 {{--Allow sort by last name--}}
-                <th class="sortable" onclick="sortTable(users, 1, asc1); asc1 *= -1; asc2 = 1; asc3 = 1;">
+                <th class="sortable" onclick="sortTable(users, 1, asc2); asc2 *= -1; asc1 = 1;">
                     Last Name
                 </th>
                 <th>Email</th>
@@ -84,7 +84,7 @@
         }
         tbody.innerHTML = '<tr>' + arr.join('</tr><tr>') + '</tr>';
     }
-    function search() {
+    function searchTable() {
         var input, filter, table, tr, td, i, j, tds, ths, matched;
         input = document.getElementById('searchInput');
         filter = input.value.toUpperCase();
