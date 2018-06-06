@@ -19,38 +19,25 @@
             </thead>
             <tbody id="usersTableBody">
             @foreach($users as $user)
-                {{--Split first and last name--}}
-                <?php
-                $lastName = (strpos($user->name, ' ') === false) ?
-                        '' :
-                        preg_replace('#.*\s([\w-]*)$#', '$1', $user->name)
-                ?>
                 <tr>
                     {{--First Name--}}
-                    <td>{{ trim(preg_replace('#' . $lastName . '#', '', $user->name)) }}</td>
+                    <td>{{ $user['first_name'] }}</td>
                     {{--Last Name--}}
                     <td>
-                        {{$lastName}}
+                        {{ $user['last_name'] }}
                     </td>
                     {{--Email address--}}
                     <td>
-                        <a href="mailto:{{ $user->email }}" >{{ $user->email }}</a>
+                        <a href="mailto:{{ $user['email'] }}" >{{ $user['email'] }}</a>
                     </td>
                     {{--Website address--}}
                     <td>
-                        <a href="http://{{ $user->website }}">{{ $user->website }}</a>
+                        <a href="http://{{ $user['website'] }}">{{ $user['website'] }}</a>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        @if($errors->any())
-            <ul class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    <li>{{$error}}</li>
-                @endforeach
-            </ul>
-        @endif
     </div>
 @endsection
 @section('css')

@@ -6,26 +6,42 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\RequestException as GuzzleRequestException;
 
 class UsersController extends Controller
 {
     /**
-     * Pulls json user data from a public api (https://jsonplaceholder.typicode.com/users)
+     * Return users to the view
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
+        $users = $this->getUsers();
+        return view('pages.users', compact('users'));
+    }
+
+    /**
+     * Pulls json user data from a public api (https://jsonplaceholder.typicode.com/users)
+     *
+     * @return mixed
+     */
+    public function getUsers()
+    {
         $guzzleClient = new GuzzleClient();
-        try {
-            $response = $guzzleClient->request('GET', 'https://jsonplaceholder.typicode.com/users');
-        } catch (GuzzleRequestException $e) {
-            return response()->view('errors.500', [], 500);
+        $response = $guzzleClient->request('GET', 'https://jsonplaceholder.typicode.com/users');
+        $users = json_decode($response->getBody());
+        $userArray = [];
+
+        foreach ($users as $index => $user) {
+            $nameParts = explode(' ', $user->name);
+            $userArray[] = [
+                'first_name'=> $nameParts[0],
+                'last_name' => $nameParts[1],
+                'email'     => $user->email,
+                'website'   => $user->website
+            ];
         }
 
-        $users = json_decode($response->getBody());
-
-        return view('pages.users', compact('users'));
+        return $userArray;
     }
 }
