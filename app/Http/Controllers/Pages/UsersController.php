@@ -48,7 +48,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Sort any array by the specified column
+     * Sort the names by the specified column
      *
      * @param Request $request
      *
