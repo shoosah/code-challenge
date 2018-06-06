@@ -33,10 +33,11 @@ class UsersController extends Controller
         $userArray = [];
 
         foreach ($users as $index => $user) {
-            $nameParts = explode(' ', $user->name);
+            $lastName = preg_replace('/.*\s([\w-]*)$/', '$1', $user->name);
+            $firstName = trim(preg_replace('/' . $lastName . '/', '', $user->name));
             $userArray[] = [
-                'first_name'=> $nameParts[0],
-                'last_name' => $nameParts[1],
+                'first_name'=> $firstName,
+                'last_name' => $lastName,
                 'email'     => $user->email,
                 'website'   => $user->website
             ];
