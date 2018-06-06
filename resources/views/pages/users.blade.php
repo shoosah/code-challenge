@@ -1,18 +1,20 @@
 @extends('layouts.master')
 @section('content')
     <div>
-        <input class="mt-5" type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search the table...">
+        <div class="mt-5">
+            <a href="{{action('Pages\UsersController@sort', ['column' => 'first_name'])}}">Sort By First Name</a>
+        </div>
+        <div class="mt-2 mb-2">
+            <a href="{{action('Pages\UsersController@sort', ['column' => 'last_name'])}}">Sort By Last Name</a>
+        </div>
+        <div class="mt-2 mb-2">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search the table...">
+        </div>
         <table class="table table-responsive table-striped" id="usersTable">
             <thead>
             <tr>
-                {{--Allow sort by first name--}}
-                <th class="sortable" onclick="sortTable(users, 0, asc1); asc1 *= -1; asc2 = 1;">
-                    First Name
-                </th>
-                {{--Allow sort by last name--}}
-                <th class="sortable" onclick="sortTable(users, 1, asc2); asc2 *= -1; asc1 = 1;">
-                    Last Name
-                </th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Website address</th>
             </tr>
@@ -40,37 +42,7 @@
         </table>
     </div>
 @endsection
-@section('css')
-    .sortable {
-        cursor: pointer;
-    }
-@endsection
 @section('scripts')
-    var users, asc1 = 1, asc2 = 1;
-    window.onload = function () {
-        users = document.getElementById('usersTableBody');
-    };
-
-    function sortTable(tbody, col, asc) {
-        var rows = tbody.rows, rlen = rows.length, arr = new Array(), i, j, cells, clen;
-        // Fill the array with values from the table
-        for (i = 0; i < rlen; i++) {
-            cells = rows[i].cells;
-            clen = cells.length;
-            arr[i] = new Array();
-            for (j = 0; j < clen; j++) {
-                arr[i][j] = cells[j].innerHTML;
-            }
-        }
-        // Sort the array by the specified column number (col) and order (asc)
-        arr.sort(function (a, b) {
-            return (a[col] == b[col]) ? 0 : ((a[col] > b[col]) ? asc : -1 * asc);
-        });
-        for (i = 0; i < rlen; i++) {
-            arr[i] = '<td>' + arr[i].join('</td><td>') + '</td>';
-        }
-        tbody.innerHTML = '<tr>' + arr.join('</tr><tr>') + '</tr>';
-    }
     function searchTable() {
         var input, filter, table, tr, td, i, j, tds, ths, matched;
         input = document.getElementById('searchInput');

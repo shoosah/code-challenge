@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::get('users', ['as' => 'users', 'uses' => 'Pages\UsersController@index']);
+Route::get('users/sort', ['as' => 'users', 'uses' => 'Pages\UsersController@sort']);

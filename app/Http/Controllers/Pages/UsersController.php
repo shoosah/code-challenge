@@ -44,4 +44,21 @@ class UsersController extends Controller
 
         return $userArray;
     }
+
+    /**
+     * Sort any array by the specified column
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function sort(Request $request)
+    {
+        $column = $request->get('column');
+        $users = $this->getUsers();
+        usort($users, function ($a, $b) use ($column) {
+            return $a[$column] <=> $b[$column];
+        });
+        return view('pages.users', compact('users'));
+    }
 }
