@@ -9,6 +9,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <style>
@@ -47,8 +48,27 @@
     </style>
 </head>
 <body>
-    <div class="flex-center position-ref full-height">
-
+    <div>
+        <table class="table table-responsive table-striped">
+            <caption>
+                Information for page {{$pageName}} over the last {{$period}}
+                Product Name: {{$productName}}
+            </caption>
+            <thead>
+                <tr>
+                    <th>Number of page views</th>
+                    <th>Logged in users</th>
+                    <th>Revenue</th>
+                </tr>
+            </thead>
+            <tbody id="usersTableBody">
+                <tr>
+                    <td>{{$numberOfUsersView}}</td>
+                    <td>{{$numberOfLoggedInUsersView}}</td>
+                    <td>{{$revenue}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
