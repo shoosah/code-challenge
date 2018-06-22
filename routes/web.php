@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dashboard', [ 'uses' => 'Pages\DashboardController@index']);
+Route::post('dashboard', 'Pages\DashboardController@find');
+Route::get('dashboard', [ 'uses' => 'Pages\DashboardController@find']);

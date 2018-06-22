@@ -16,41 +16,69 @@ class DashboardController extends Controller
     const TOTAL_FOR_ALL_RESULTS_INDEX = 'totalsForAllResults';
 
     /**
-     * Return dashboard to the view
+     * Find the information based on the entered information
      *
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function find(Request $request)
+    {
+        if (!empty($request)) {
+            $result = $this->getResult($request->get('pageName'), $request->get('productName'));
+        } else {
+            $result = false;
+        }
+        return view(
+            'pages.dashboard',
+            ['result' => $result]
+        );
+    }
+
+    /**
+     * Get the results of the entered information
+     *
+     * @param string|null $pageName
+     * @param string|null $productName
+     * @param Period|null $period
+     *
+     * @return array
+     */
+    private function getResult(string $pageName = null, string $productName = null, Period $period = null)
     {
         $usersMetric = 'ga:users';
         $revenueMetric = 'ga:itemRevenue';
+
+        $pageName = $pageName ?? self::ZEFFER_2018_PAGE;
+        $productName = $productName ?? self::ZEFFER_PRODUCT_NAME;
+        $period = $period ??  Period::days(self::NUMBER_OF_PERIOD_DAYS);
+
+
         //format for displaying revenue
         setlocale(LC_MONETARY, 'en_US');
-
-        $output = [
-            'period' => self::NUMBER_OF_PERIOD_DAYS . ' days',
-            'pageName' => self::ZEFFER_2018_PAGE,
-            'productName' => self::ZEFFER_PRODUCT_NAME,
+        return [
+            'startDate' => date_format($period->startDate, 'Y-m-d'),
+            'endDate' => date_format($period->endDate, 'Y-m-d'),
+            'pageName' => $pageName,
+            'productName' => $productName,
             'numberOfUsersView' => $this->getNumberOfUsersView(
                 $usersMetric,
-                self::ZEFFER_2018_PAGE,
-                Period::days(self::NUMBER_OF_PERIOD_DAYS)
+                $pageName,
+                $period
             )[self::TOTAL_FOR_ALL_RESULTS_INDEX][$usersMetric],
             'numberOfLoggedInUsersView' => $this->getNumberOfLoggedInUsersView(
                 $usersMetric,
-                self::ZEFFER_2018_PAGE,
-                Period::days(self::NUMBER_OF_PERIOD_DAYS)
+                $pageName,
+                $period
             )[self::TOTAL_FOR_ALL_RESULTS_INDEX][$usersMetric],
             'revenue' => money_format(
                 '%(#10n',
                 $this->getRevenue(
                     $revenueMetric,
-                    self::ZEFFER_PRODUCT_NAME,
-                    Period::days(self::NUMBER_OF_PERIOD_DAYS)
+                    $productName,
+                    $period
                 )[self::TOTAL_FOR_ALL_RESULTS_INDEX][$revenueMetric]
             )
         ];
-        return view('pages.dashboard', $output);
     }
 
     /**

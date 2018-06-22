@@ -49,26 +49,49 @@
 </head>
 <body>
     <div>
-        <table class="table table-responsive table-striped">
-            <caption>
-                Information for page {{$pageName}} over the last {{$period}}
-                Product Name: {{$productName}}
-            </caption>
-            <thead>
-                <tr>
-                    <th>Number of page views</th>
-                    <th>Logged in users</th>
-                    <th>Revenue</th>
-                </tr>
-            </thead>
-            <tbody id="usersTableBody">
-                <tr>
-                    <td>{{$numberOfUsersView}}</td>
-                    <td>{{$numberOfLoggedInUsersView}}</td>
-                    <td>{{$revenue}}</td>
-                </tr>
-            </tbody>
-        </table>
+        {!! Form::open() !!}
+        <div class="form-group">
+            {!! Form::text('pageName', null, [
+                'class' => 'form-control',
+                'placeholder' => 'Page Name',
+            ]) !!}
+            {!! Form::text('productName', null, [
+                'class' => 'form-control',
+                'placeholder' => 'Product Name',
+            ]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::submit('Search', ['class' => 'btn btn-primary form-control']) !!}
+        </div>
+        {!! Form::close() !!}
     </div>
+    @if ($result)
+        <div>
+            <table class="table table-responsive table-striped">
+                <caption>
+                    Information for page {{$result['pageName']}}
+                    <br/>
+                    From {{$result['startDate']}}
+                    until {{$result['endDate']}}
+                    <br/>
+                    Product Name: {{$result['productName']}}
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Number of page views</th>
+                        <th>Logged in users</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td>{{$result['numberOfUsersView']}}</td>
+                        <td>{{$result['numberOfLoggedInUsersView']}}</td>
+                        <td>{{$result['revenue']}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    @endif
 </body>
 </html>
